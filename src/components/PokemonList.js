@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { selectPokemon } from '../actions';
 import Modal from 'react-responsive-modal';
 import '../assests/css/PokemonDetail.css'
-import Pagination from 'react-js-pagination';
+// import Pagination from 'react-js-pagination';
 // import $ from "jquery";
 // import '../'
 
@@ -17,8 +17,8 @@ class PokemonList extends Component {
             pokemonName: '',
             pokemonType: '',
             pokemonAttack: '',
-            pokemonDenfense: '',
-            pokemonList: [],
+            pokemonDefense: '',
+            pokemonData: this.props.pokemonList,
             current: 1
         };
     }
@@ -30,13 +30,13 @@ class PokemonList extends Component {
     }
 
     onSearch = (e) => {
-        document.getElementById('searchbar').addEventListener('keyup', e => {
-            let val = e.target.value.toLowerCase();
+        let val = e.target.value.toLowerCase();
 
-            let matches = this.props.pokemonList.filter(v => v.name.english.toLowerCase().includes(val));
-            this.setState({
-                pokemonList: matches
-            })
+        let matches = this.props.pokemonList.filter(v => v.name.english.toLowerCase().includes(val));
+        console.log(matches);
+        this.setState({
+            pokemonData: matches
+
         });
 
     }
@@ -48,19 +48,22 @@ class PokemonList extends Component {
         this.setState({ open: false });
     };
     onSubmit = () => {
-        if (this.state.pokemonName.trim() !== '' && this.state.pokemonType.trim() !== '' && this.state.pokemonAttack.trim() !== '' && this.state.pokemonDenfense.trim() !== '') {
+        if (this.state.pokemonName.trim() !== '' && this.state.pokemonType.trim() !== '' && this.state.pokemonAttack.trim() !== '' && this.state.pokemonDefense.trim() !== '') {
 
 
-            let pokemonData = {
-                pokemonName: this.state.pokemonName,
-                pokemonType: this.state.pokemonType.split(','),
-                pokemonAttack: this.state.pokemonAttack,
-                pokemonDefense: this.state.pokemonDefense
+            let newPokemon = {
+                id: this.props.pokemonList.length + 1,
+                name: { english: this.state.pokemonName },
+                type: this.state.pokemonType.split(','),
+                base: {
+                    Attack: this.state.pokemonAttack,
+                    Defense: this.state.pokemonDefense
+                }
 
             }
-            this.state.pokemonList.push(pokemonData)
-            this.props.onSubmitData(pokemonData)
-            this.setState({ open: false, inputStreamName: '', outputStreamName: '', arrayCounter: this.state.arrayCounter + 1 });
+            console.log(newPokemon);
+            this.state.pokemonData.push(newPokemon)
+            this.setState({ open: false, pokemonName: '', pokemonType: '', pokemonAttack: '', pokemonDefense: '' });
 
         }
 
@@ -68,9 +71,9 @@ class PokemonList extends Component {
         // this.setState({ open: false });
     };
 
-    renderList() {
+    renderList = () => {
 
-        return this.props.pokemonList.map((pokemon) => {
+        return this.state.pokemonData.map((pokemon) => {
             return (
                 <div key='{pokemon.id}' className="container">
                     <div className="row">
@@ -92,15 +95,15 @@ class PokemonList extends Component {
         const { open } = this.state;
         return (<div className="container">
             <div className="row">
-                {/* <div className="col-md-6"> */}
-                {/* <div className="search-container">
-                        <form action="/action_page.php">
+                <div className="col-md-6">
+                    <div className="search-container">
+
                         <input type="text" id="searchbar" placeholder="Search.." name="search" onChange={(e) => this.onSearch(e)} />
-                        <button type="submit"><i className="fa fa-search"></i></button>
-                        </form>
-                    </div> */}
-                {/* </div> */}
-                <div className="col-md-12">
+
+
+                    </div>
+                </div>
+                <div className="col-md-6">
                     <div ><center><h1>Pokemon List </h1></center></div><br /></div></div>
 
             {this.renderList()}
@@ -126,7 +129,7 @@ class PokemonList extends Component {
                         <input
                             type="text"
                             className="form-control"
-                            name="inputStreamName"
+                            name="pokemonName"
                             placeholder="Pokemon Name"
 
                             value={this.state.inputStreamName}
@@ -136,7 +139,7 @@ class PokemonList extends Component {
                         <input
                             type="text"
                             className="form-control outputStream"
-                            name="outputStreamName"
+                            name="pokemonType"
                             placeholder="Pokemon Type"
 
                             value={this.state.outputStreamName}
@@ -146,7 +149,7 @@ class PokemonList extends Component {
                         <input
                             type="number"
                             className="form-control"
-                            name="inputStreamName"
+                            name="pokemonAttack"
                             placeholder="Pokemon Attack"
 
                             value={this.state.inputStreamName}
@@ -156,7 +159,7 @@ class PokemonList extends Component {
                         <input
                             type="number"
                             className="form-control outputStream"
-                            name="outputStreamName"
+                            name="pokemonDefense"
                             placeholder="Pokemon Defense"
 
                             value={this.state.outputStreamName}

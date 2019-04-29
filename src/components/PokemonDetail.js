@@ -22,6 +22,7 @@ class PokemonDetail extends Component {
         this.setState({ open: false });
     };
     onSubmit = () => {
+
         this.setState({
             open: false,
             AttributeName: '',
@@ -40,7 +41,7 @@ class PokemonDetail extends Component {
                 <div ><center><h1>Details of {this.props.pokemon.name.english} </h1></center></div >
                 <div><h3>  Types:{this.props.pokemon.type.join(', ')}</h3></div><br />
                 <div><h3>  Attack:{this.props.pokemon.base.Attack}</h3></div><br />
-                <div><h3>  Defence:{this.props.pokemon.base.Defense}</h3></div><br />
+                <div><h3>  Defense:{this.props.pokemon.base.Defense}</h3></div><br />
                 <div><button className="btn btn-success" onClick={this.onOpenModal} title="Add New Attribute">Add New Attribute </button></div>
                 <Modal open={open} onClose={this.onCloseModal} className="modalLayout" >
                     <div className="modalContent">
@@ -50,7 +51,6 @@ class PokemonDetail extends Component {
                                 type="text"
                                 className="form-control"
                                 placeholder="Attribute Name"
-
                                 value={this.state.AttributeName}
                                 onChange={ph => this.setState({ AttributeName: ph.target.value })} required />
                         </div><br />
@@ -60,7 +60,6 @@ class PokemonDetail extends Component {
                                 className="form-control outputStream"
                                 name="Attribute value"
                                 placeholder="Attribute Value"
-
                                 value={this.state.outputStreamName}
                                 onChange={e => this.setState({ AttributeValue: e.target.value })} required />
                         </div>
