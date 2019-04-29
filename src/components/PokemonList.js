@@ -33,7 +33,7 @@ class PokemonList extends Component {
         let val = e.target.value.toLowerCase();
 
         let matches = this.props.pokemonList.filter(v => v.name.english.toLowerCase().includes(val));
-        console.log(matches);
+        // console.log(matches);
         this.setState({
             pokemonData: matches
 
